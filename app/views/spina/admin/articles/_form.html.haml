@@ -16,24 +16,25 @@
       = link_to '#', data: {close_notification: true} do
         = icon('cross')
 
-%header#header
-  .breadcrumbs
-    = render_breadcrumbs separator: '<div class="divider"></div>'
-    - unless @article.new_record?
-      = link_to article_path(@article), target: :blank, class: 'button button-hollow button-small' do
-        %i.icon.icon-export{style: 'margin: 0'}
+= form_for [:admin, @article], multipart: true, html: {autocomplete: "off"} do |f|
+  %header#header
+    .header-title
+      .breadcrumbs= render_breadcrumbs separator: '<div class="divider"></div>'
+      - unless @article.new_record?
+        = link_to article_path(@article), target: :blank, class: 'button button-hollow button-small' do
+          %i.icon.icon-export{style: 'margin: 0'}
 
-  #header_actions
-    %button.button.button-primary{type: 'submit'}
-      = icon('check')
-      = t('spina.articles.save', scaffold_name: t('spina.articles.scaffold_name'))
-    = link_to t('spina.cancel'), spina.admin_articles_path, class: 'button button button-secondary'
+    #header_actions
+      %button.button.button-primary{type: 'submit'}
+        = icon('check')
+        Save
+      = link_to t('spina.cancel'), spina.admin_articles_path, class: 'button button button-secondary'
 
-  %nav#secondary.tabs
-    %ul
-      - @tabs.each_with_index do |tab, i|
-        %li{class: (i==0 ? 'active' : '')}
-          = link_to t("spina.products.#{tab}"), "##{tab}"
+    %nav#secondary.tabs
+      %ul
+        - @tabs.each_with_index do |tab, i|
+          %li{class: (i==0 ? 'active' : '')}
+            = link_to t("spina.articles.#{tab}"), "##{tab}"
 
   - @tabs.each do |tab|
     = render "form_#{tab}", f: f

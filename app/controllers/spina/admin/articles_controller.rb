@@ -1,8 +1,8 @@
 module Spina
   module Admin
     class ArticlesController < AdminController
-      before_action :set_breadcrumb
       before_action :set_article, only: [:edit, :update, :destroy]
+      before_action :set_breadcrumb
       before_action :set_tabs, only: %i[new create edit update]
 
       layout "spina/admin/admin"
@@ -61,7 +61,7 @@ module Spina
       end
 
       def set_tabs
-        @tabs = %w[page search_engines]
+        @tabs = %w[advanced content search_engines]
       end
 
       def article_params
