@@ -1,22 +1,22 @@
 module Spina
   class Article < ActiveRecord::Base
     extend FriendlyId
-    friendly_id :title, use: :slugged
+    friendly_id :title, use: [:slugged, :finders]
 
-    belongs_to :image, optional: true
+    belongs_to :image, class_name: "Spina::Image", optional: true
 
-    validates :title, :body, :author, :publish_date, presence: true
+    validates :title, :body, :publish_date, presence: true
     validates :slug, uniqueness: true
 
-    scope :live, -> { where('publish_date <= ? AND draft = ?', Date.today, 0) }
-    scope :newest_first, -> { order('publish_date DESC') }
+    scope :by_newest, -> { order(publish_date: :DESC) }
+    scope :is_live, -> { where("publish_date <= ? AND draft = ?", Date.today, 0) }
 
     def live?
-      true if self.publish_date <= Date.today && draft == 0
+      self.publish_date <= Date.today && draft.zero?
     end
 
     def scheduled?
-      true if self.publish_date >= Date.today && draft == 0
+      self.publish_date >= Date.today && draft.zero?
     end
 
     def draft?
