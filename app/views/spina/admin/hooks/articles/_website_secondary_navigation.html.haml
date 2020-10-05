@@ -1,2 +1,2 @@
 %li{ class: ('active' if current_admin_path.start_with?('/articles')) }
-  = link_to spina.admin_articles_path, I18n.t("spina.articles.scaffold_name_plural")
+  = link_to t("spina.articles.scaffold_name_plural"), spina.admin_articles_path
