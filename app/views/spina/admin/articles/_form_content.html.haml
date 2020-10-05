@@ -1,42 +1,49 @@
-#content.tab-content.active.well
-  .horizontal-form
-    .horizontal-form-group
-      .horizontal-form-label
-        Title
-      .horizontal-form-content
-        = f.text_field :title
-    .horizontal-form-group
-      .horizontal-form-label
-        Teaser
-      .horizontal-form-content
-        = f.text_area :teaser
-    .horizontal-form-group
-      .horizontal-form-label
-        Body
-      .horizontal-form-content
-        = render 'spina/admin/shared/rich_text_field', f: f, field: :body
-    .horizontal-form-group
-      .horizontal-form-label
-        Image
-      .horizontal-form-content
-        = link_to admin_media_picker_path(selected_ids: [f.object.image_id], hidden_field_id: 'media_picker_image_id'), remote: true, class: 'media_picker clearfix' do
-          .placeholder
-            %span.button.button-small.button-round
-              %i.icon.icon-dots
-              = (t'spina.images.choose_image')
+#content.tab-content.active
 
-          - if f.object&.image&.file&.attached?
-            .image
-              = image_tag variant(f.object.image.file, resize: "300x300^", crop: "300x300+0+0")
+  .page-form
+    .page-form-group
+      .page-form-label Title
+      .page-form-control
+        = f.text_field :title, placeholder: 'Title the post', class: 'input-large'
 
-          = f.hidden_field :image_id, data: { hidden_field_id: "media_picker_image_id" }
-    .horizontal-form-group
-      .horizontal-form-label
-        Publish date
-      .horizontal-form-content
-        = f.text_field :publish_date, value: (@article.publish_date.strftime("%d-%m-%Y") unless @article.new_record?), class: 'datepicker'
-    .horizontal-form-group
-      .horizontal-form-label
-        Author
-      .horizontal-form-content
-        = f.text_field :author
+    .page-form-group
+      .page-form-label Teaser
+      .page-form-control
+        = f.text_area :teaser, placeholder: 'Describe the post'
+
+    .page-form-group
+      .page-form-label Body
+      .page-form-content
+        .page-form-rich-text
+          = f.hidden_field :body, id: "#{f.object.object_id}_input"
+          %trix-editor.text-input.trix-content{ input: "#{f.object.object_id}_input" }
+
+    .page-form-group
+      .page-form-label Image
+      .page-form-control{data: {controller: "image-form"}}
+        .page-form-media-picker
+          %div{style: "width: 100%"}
+            = link_to admin_media_picker_path(selected_ids: [f.object.image_id], input: "media_picker_#{f.object.object_id}", mode: "single"), remote: true, class: 'image', data: {target: 'image-form.image'} do
+              .page-form-media-picker-placeholder=t "spina.images.choose_image"
+              %div{id: "media_picker_#{f.object.object_id}"}
+                = f.hidden_field :image_id, data: {target: 'image-form.imageId'}
+                = f.hidden_field :signed_blob_id, data: {target: 'image-form.signedBlobId'}, value: ''
+                = f.hidden_field :filename, data: {target: 'image-form.filename'}, value: ''
+              %div{style: "width: 200px; height: 150px; overflow: hidden"}
+                - if f.object.image.present?
+                  = image_tag main_app.url_for(f.object.image.variant(resize: "400x300^", crop: "400x300+0+0")), width: 200, height: 150
+
+          = button_tag type: :default, class: 'button button-small button-default', data: {action: "image-form#remove"} do
+            %i.icon.icon-cross{style: "margin: 0; font-size: 10px"}
+
+:sass
+  .page-form-control
+    textarea
+      background: white
+      border: 1px solid #e2e2e2
+      border-radius: 6px
+      box-shadow: 0 1px 1px rgba(0, 0, 0, .05)
+      padding: 15px
+
+    input.datepicker
+      background-color: white

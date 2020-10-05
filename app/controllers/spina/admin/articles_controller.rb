@@ -12,12 +12,12 @@ module Spina
       end
 
       def new
-        add_breadcrumb "New #{t("spina.articles.scaffold_name")}", spina.new_admin_article_path
+        add_breadcrumb "New #{I18n.t("spina.articles.title")}", spina.new_admin_article_path
         @article = Spina::Article.new
       end
 
       def create
-        add_breadcrumb "New #{t("spina.articles.scaffold_name")}"
+        add_breadcrumb "New #{I18n.t("spina.articles.title")}"
         @article = Spina::Article.new(article_params)
 
         if @article.save
@@ -61,7 +61,7 @@ module Spina
       end
 
       def set_tabs
-        @tabs = %w[advanced content search_engines]
+        @tabs = %w[content search_engines advanced]
       end
 
       def article_params

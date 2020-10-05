@@ -9,7 +9,7 @@
 %header#header
   .breadcrumbs
     = render_breadcrumbs seperator: '<div class="divider"></div>'
-    = link_to admin_articles_path, target: :blank, class: 'button button-hollow button-small' do
+    = link_to spina.admin_articles_path, target: :blank, class: 'button button-hollow button-small' do
       %i.icon.icon-export{style: 'margin: 0'}
 
   #header_actions
@@ -26,32 +26,21 @@
   - else
     %em No articles
 
-:scss
-  .article-status {
-    height: 52px;
-    left: 0;
-    position: absolute;
-    top: 0;
-    transition: all 0.2s;
-    width: 7px;
+:sass
+  .article-status
+    padding: 6px 12px
+    border-radius: 999px
+    line-height: 18px
+    color: white
+    font-size: 12px
+    font-weight: 600
+    margin-right: 12px
 
-    &.live {
-      background-color: #3adb76;
-      z-index: 1;
-    }
+    &.live
+      background-color: #3adb76
 
-    &.draft {
-      background-color: #767676;
-    }
+    &.draft
+      background-color: #767676
 
-    &.scheduled {
-      background-color: #1779ba;
-    }
-  }
-
-  .dd-item:hover {
-    .article-status {
-      opacity: 0.7;
-      width: 9px;
-    }
-  }
+    &.scheduled
+      background-color: #1779ba

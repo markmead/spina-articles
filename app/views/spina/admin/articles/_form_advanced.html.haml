@@ -1,8 +1,18 @@
-#advanced.tab-content.well
-  .horizontal-form
-    .horizontal-form-group
-      .horizontal-form-label
-        Draft?
-        %small Great for when your article is not quite finished
-      .horizontal-form-content
+#advanced.tab-content
+
+  .page-form
+    .page-form-group
+      .page-form-label Author
+      .page-form-control
+        = f.text_field :author, placeholder: 'Post author', class: 'input-large'
+
+    .page-form-group
+      .page-form-label Publish date
+      .page-form-control
+        = f.text_field :publish_date, value: (@article.publish_date.strftime("%d-%m-%Y") unless @article.new_record?), class: 'input-large datepicker'
+
+    .page-form-group
+      .page-form-label
+        = Spina::Page.human_attribute_name :draft
+      .page-form-control
         = f.check_box :draft, data: { switch: true }

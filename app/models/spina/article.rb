@@ -12,15 +12,15 @@ module Spina
     scope :is_live, -> { where("publish_date <= ? AND draft = ?", Date.today, 0) }
 
     def live?
-      self.publish_date <= Date.today && draft.zero?
+      self.publish_date <= Date.today && !draft
     end
 
     def scheduled?
-      self.publish_date >= Date.today && draft.zero?
+      self.publish_date >= Date.today && !draft
     end
 
     def draft?
-      draft == 1
+      draft
     end
 
     def next_article
