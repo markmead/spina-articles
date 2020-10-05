@@ -1,12 +1,10 @@
 en:
   spina:
     articles:
-      scaffold_name: Article
-      scaffold_name_plural: Articles
-      title: ! '%{scaffold_name}'
-      all: ! 'All %{scaffold_name}'
-      new: ! 'New %{scaffold_name}'
-      save: ! 'Save %{scaffold_name}'
+      name: Article
+      name_plural: Articles
+      new: ! 'New %{title}'
+      save: ! 'Save %{title}'
       delete: ! 'Are you sure you want to delete <strong>%{subject}</strong>?'
-      empty: ! 'No %{scaffold_name}'
-      saved: ! '%{scaffold_name} saved'
+      empty: ! 'No %{title}'
+      saved: ! '%{title} saved'
