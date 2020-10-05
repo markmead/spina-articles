@@ -28,7 +28,7 @@ module Spina
       end
 
       def edit
-        add_breadcrumb @article.title.truncate(200)
+        add_breadcrumb @article.title.truncate(50)
       end
 
       def update
