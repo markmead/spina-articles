@@ -1,9 +1,9 @@
 module Spina
   module Admin
     class ArticlesController < AdminController
-      before_action :set_article, only: [:edit, :update, :destroy]
       before_action :set_breadcrumb
-      before_action :set_tabs, only: %i[new create edit update]
+      before_action :set_article, only: %w[edit update destroy]
+      before_action :set_tabs, only: %w[new create edit update]
 
       layout "spina/admin/admin"
 
@@ -12,16 +12,16 @@ module Spina
       end
 
       def new
-        add_breadcrumb "New #{I18n.t("spina.articles.title")}", spina.new_admin_article_path
+        add_breadcrumb "New #{I18n.t("spina.articles.scaffold_name")}", spina.new_admin_article_path
         @article = Spina::Article.new
       end
 
       def create
-        add_breadcrumb "New #{I18n.t("spina.articles.title")}"
+        add_breadcrumb "New #{I18n.t("spina.articles.scaffold_name")}"
         @article = Spina::Article.new(article_params)
 
         if @article.save
-          redirect_to spina.admin_articles_url
+          redirect_to spina.admin_article_url(@article)
         else
           render :new
         end
@@ -33,14 +33,11 @@ module Spina
 
       def update
         respond_to do |format|
-          if @article.update_attributes(article_params)
-            add_breadcrumb @article.title
-            format.html { redirect_to spina.admin_articles_url, notice: t("spina.articles.saved", scaffold_name: t("spina.articles.scaffold_name")) }
+          if @article.update(article_params)
+            format.html { redirect_to spina.admin_articles_url, notice: I18n.t("spina.articles.saved") }
             format.js
           else
-            format.html do
-              render :edit, layout: "spina/admin/admin"
-            end
+            render :edit
           end
         end
       end
@@ -57,7 +54,7 @@ module Spina
       end
 
       def set_breadcrumb
-        add_breadcrumb t("spina.articles.scaffold_name_plural"), spina.admin_articles_path
+        add_breadcrumb I18n.t("spina.articles.scaffold_name_plural"), spina.admin_articles_path
       end
 
       def set_tabs

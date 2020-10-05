@@ -12,7 +12,6 @@
         = f.text_field :publish_date, value: (@article.publish_date.strftime("%d-%m-%Y") unless @article.new_record?), class: 'input-large datepicker'
 
     .page-form-group
-      .page-form-label
-        = Spina::Page.human_attribute_name :draft
+      .page-form-label Draft
       .page-form-control
         = f.check_box :draft, data: { switch: true }

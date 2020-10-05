@@ -1,0 +1,6 @@
+%article
+  %h1= @article.title
+  %time{datetime: @article.publish_date}= @article.publish_date.strftime("%-d %b, %Y")
+  %hr/
+  %div
+    != @article.body
