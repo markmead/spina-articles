@@ -12,33 +12,30 @@ module Spina
       end
 
       def new
-        add_breadcrumb "New #{I18n.t("spina.articles.scaffold_name")}", spina.new_admin_article_path
+        add_breadcrumb I18n.t("spina.articles.new", title: I18n.t("spina.articles.name")), spina.new_admin_article_path
         @article = Spina::Article.new
       end
 
       def create
-        add_breadcrumb "New #{I18n.t("spina.articles.scaffold_name")}"
+        add_breadcrumb I18n.t("spina.articles.new", title: I18n.t("spina.articles.name"))
         @article = Spina::Article.new(article_params)
 
         if @article.save
-          redirect_to spina.admin_article_url(@article)
+          redirect_to spina.edit_admin_article_url(@article), notice: I18n.t("spina.articles.saved", title: @article.title)
         else
           render :new
         end
       end
 
       def edit
-        add_breadcrumb @article.title
+        add_breadcrumb @article.title.truncate(200)
       end
 
       def update
-        respond_to do |format|
-          if @article.update(article_params)
-            format.html { redirect_to spina.admin_articles_url, notice: I18n.t("spina.articles.saved") }
-            format.js
-          else
-            render :edit
-          end
+        if @article.update(article_params)
+          redirect_to spina.admin_articles_url, notice: I18n.t("spina.articles.saved", title: @article.title)
+        else
+          render :edit
         end
       end
 
@@ -54,7 +51,7 @@ module Spina
       end
 
       def set_breadcrumb
-        add_breadcrumb I18n.t("spina.articles.scaffold_name_plural"), spina.admin_articles_path
+        add_breadcrumb I18n.t("spina.articles.name_plural"), spina.admin_articles_path
       end
 
       def set_tabs
