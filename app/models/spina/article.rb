@@ -8,8 +8,8 @@ module Spina
     validates :title, :body, :publish_date, presence: true
     validates :slug, uniqueness: true
 
-    scope :by_newest, -> { order(publish_date: :DESC) }
-    scope :is_live, -> { where("publish_date <= ? AND draft = ?", Date.today, 0) }
+    scope :published, -> { where('publish_date <= ?', Date.today) }
+    scope :live, -> { where(draft: false) }
 
     def live?
       self.publish_date <= Date.today && !draft
@@ -24,11 +24,11 @@ module Spina
     end
 
     def next_article
-      self.class.is_live.where("id > ?", id).order(publish_date: :ASC).first
+      self.class.live.where("id > ?", id).order(publish_date: :asc).first
     end
 
     def prev_article
-      self.class.is_live.where("id < ?", id).order(publish_date: :DESC).first
+      self.class.live.where("id < ?", id).order(publish_date: :desc).first
     end
   end
 end

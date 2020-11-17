@@ -5,10 +5,8 @@ module Spina
       before_action :set_article, only: %w[edit update destroy]
       before_action :set_tabs, only: %w[new create edit update]
 
-      layout "spina/admin/admin"
-
       def index
-        @articles = Article.by_newest
+        @articles = Article.all
       end
 
       def new

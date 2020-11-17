@@ -1,9 +1,9 @@
 module Spina
   class ArticlesController < Spina::ApplicationController
-    layout "default/application"
-
     def index
-      @articles = Spina::Article.by_newest
+      @articles = Spina::Article.live
+                                .published
+                                .order(publish_date: :desc)
     end
 
     def show
