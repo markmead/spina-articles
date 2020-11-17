@@ -24,11 +24,11 @@ module Spina
     end
 
     def next_article
-      self.class.live.where("id > ?", id).order(publish_date: :ASC).first
+      self.class.is_live.where("id > ?", id).order(publish_date: :ASC).first
     end
 
     def prev_article
-      self.class.live.where("id < ?", id).order(publish_date: :DESC).first
+      self.class.is_live.where("id < ?", id).order(publish_date: :DESC).first
     end
   end
 end
